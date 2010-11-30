@@ -58,6 +58,7 @@ class GenerateCommand extends Command
         foreach ($this->container->get('kernel')->getBundles() as $bundle) {
             $bundleClass     = get_class($bundle);
             $bundleNamespace = substr($bundleClass, 0, strrpos($bundleClass, '\\'));
+            $bundleName      = substr($bundleClass, strrpos($bundleClass, '\\') + 1);
 
             if (is_dir($dir = $bundle->getPath().'/Resources/config/doctrator')) {
                 $finder = new Finder();
@@ -74,11 +75,14 @@ class GenerateCommand extends Command
                             }
                         }
 
-                        // outputs
+                        // outputs && bundle
                         if (0 === strpos($class, $bundleNamespace)) {
                             $configClass['output'] = $bundle->getPath().'/Entity';
+
+                            $configClass['bundle_name'] = $bundleName;
+                            $configClass['bundle_dir']  = $bundle->getPath();
                         } else {
-                            unset($configClass['output']);
+                            unset($configClass['output'], $configClass['bundle_name'], $configClass['bundle_dir']);
                         }
 
                         // merge
@@ -97,6 +101,9 @@ class GenerateCommand extends Command
         $mondator->setConfigClasses($configClasses);
         $mondator->setExtensions(array(
             new \Doctrator\Extension\Core(),
+            new \Bundle\DoctratorBundle\Extension\GenBundleEntity(array(
+                'gen_dir' => $this->container->getParameter('kernel.root_dir').'/../src/Gen',
+            )),
         ));
         $mondator->process();
     }
