@@ -38,11 +38,13 @@ class DoctratorBundle extends Bundle
         $em = $this->container->get('doctrine.orm.entity_manager');
 
         // FIXME
+        $genDir = $this->container->getParameter('kernel.root_dir').'/../src/Gen';
         $metadataDriverImpl = $em->getConfiguration()->getMetadataDriverImpl();
         foreach ($this->container->get('kernel')->getBundles() as $bundle) {
-            if (is_dir($dir = $bundle->getPath().'/Entity')) {
-                $bundleClass = get_class($bundle);
-                $metadataDriverImpl->addDriver(new DoctratorDriver($dir), substr($bundleClass, 0, strrpos($bundleClass, '\\')).'\Entity');
+            $bundleClass = get_class($bundle);
+            $bundleName  = substr(get_class($bundle), strrpos(get_class($bundle), '\\') + 1);
+            if (is_dir($dir = $genDir.'/'.$bundleName.'/Entity')) {
+                $metadataDriverImpl->addDriver(new DoctratorDriver($dir), 'Gen\\'.$bundleName.'\Entity');
             }
         }
 
