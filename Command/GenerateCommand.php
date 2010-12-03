@@ -99,12 +99,17 @@ class GenerateCommand extends Command
 
         $output->writeln('generating classes');
 
-        $mondator = new Mondator();
-        $mondator->setConfigClasses($configClasses);
-        $mondator->setExtensions(array(
+        $extensions = array(
             new \Doctrator\Extension\Core(),
             new \Bundle\DoctratorBundle\Extension\GenBundleEntity(),
-        ));
+        );
+        foreach ($this->container->findTaggedServiceIds('doctrator.extension') as $id => $attributes) {
+            $extensions[] = $this->container->get($id);
+        }
+
+        $mondator = new Mondator();
+        $mondator->setConfigClasses($configClasses);
+        $mondator->setExtensions($extensions);
         $mondator->process();
     }
 }
