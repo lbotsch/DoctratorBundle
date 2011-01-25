@@ -19,28 +19,28 @@
  * along with DoctratorBundle. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Bundle\DoctratorBundle\Extension;
+namespace Bundle\Pablodip\DoctratorBundle\Extension;
 
 use Mondongo\Mondator\Definition\Definition;
 use Mondongo\Mondator\Extension;
 use Mondongo\Mondator\Output\Output;
 
 /**
- * GenBundleEntity extension.
+ * Bundles extension.
  *
  * @package DoctratorBundle
  * @author  Pablo Díez Pascual <pablodip@gmail.com>
  */
-class GenBundleEntity extends Extension
+class Bundles extends Extension
 {
     /**
      * @inheritdoc
      */
     protected function doProcess()
     {
-        foreach (array('bundle_class', 'bundle_dir') as $parameter) {
-            if (!isset($this->configClass[$parameter])) {
-                throw new \RuntimeException(sprintf('The class "%s" does not have the "%s" config class parameter.', $this->class, $parameter));
+        foreach (array('bundle_name', 'bundle_namespace', 'bundle_dir') as $parameter) {
+            if (!isset($this->configClass[$parameter]) || !$this->configClass[$parameter]) {
+                return;
             }
         }
 
@@ -53,7 +53,7 @@ class GenBundleEntity extends Extension
         );
         foreach ($classes as &$class) {
             $class = strtr($class, array(
-                '%bundle_namespace%' => substr($this->configClass['bundle_class'], 0, strrpos($this->configClass['bundle_class'], '\\')),
+                '%bundle_namespace%' => $this->configClass['bundle_namespace'],
                 '%class_name%'       => substr($this->class, strrpos($this->class, '\\') + 1),
             ));
         }

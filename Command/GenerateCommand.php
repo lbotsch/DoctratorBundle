@@ -19,7 +19,7 @@
  * along with DoctratorBundle. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Bundle\DoctratorBundle\Command;
+namespace Bundle\Pablodip\DoctratorBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -54,62 +54,75 @@ class GenerateCommand extends Command
     {
         $output->writeln('processing config classes');
 
-        $genDir = $this->container->getParameter('kernel.root_dir').'/../src/Gen';
+        $modelDir = $this->container->getParameter('kernel.root_dir').'/../src/Model';
 
         $configClasses = array();
+
+        // bundles
+        $configClassesPending = array();
         foreach ($this->container->get('kernel')->getBundles() as $bundle) {
-            $bundleClass        = get_class($bundle);
-            $bundleName         = substr($bundleClass, strrpos($bundleClass, '\\') + 1);
-            $bundleGenNamespace = 'Gen\\'.$bundleName;
+            $bundleModelNamespace = 'Model\\'.$bundle->getName();
 
             if (is_dir($dir = $bundle->getPath().'/Resources/config/doctrator')) {
                 $finder = new Finder();
                 foreach ($finder->files()->name('*.yml')->followLinks()->in($dir) as $file) {
                     foreach ((array) Yaml::load($file) as $class => $configClass) {
                         // class
-                        if (0 === strpos($class, $bundleGenNamespace)) {
-                            if (
-                                0 !== strpos($class, $bundleGenNamespace.'\Entity')
-                                ||
-                                strlen($bundleGenNamespace.'\Entity') !== strrpos($class, '\\')
-                            ) {
-                                throw new \RuntimeException(sprintf('The class "%s" is not in the Entity namespace of the bundle.', $class));
-                            }
+                        if (0 !== strpos($class, 'Model\\')) {
+                            throw new \RuntimeException('The Doctrator entities must been in the "Model\" namespace.');
                         }
-
-                        // outputs && bundle
-                        if (0 === strpos($class, $bundleGenNamespace)) {
-                            $configClass['output'] = $genDir.'/'.$bundleName.'/Entity';
-
-                            $configClass['bundle_class'] = $bundleClass;
-                            $configClass['bundle_dir']   = $bundle->getPath();
-                        } else {
+                        if (0 !== strpos($class, $bundleModelNamespace)) {
                             unset($configClass['output'], $configClass['bundle_name'], $configClass['bundle_dir']);
+                            $configClassesPending[] = array('class' => $class, 'config_class' => $configClass);
+                            continue;
                         }
 
-                        // merge
-                        if (!isset($configClasses[$class])) {
-                            $configClasses[$class] = array();
-                        }
-                        $configClasses[$class] = array_merge_recursive($configClasses[$class], $configClass);
+                        // config class
+                        $configClass['output'] = $modelDir.'/'.str_replace('\\', '/', substr(substr($class, 0, strrpos($class, '\\')), 6));
+                        $configClass['bundle_name']      = $bundle->getName();
+                        $configClass['bundle_namespace'] = $bundle->getNamespace();
+                        $configClass['bundle_dir']       = $bundle->getPath();
+
+                        $configClasses[$class] = $configClass;
                     }
+                }
+            }
+        }
+
+        // merge bundles
+        foreach ($configClassesPending as $pending) {
+            if (!isset($configClasses[$pending['class']])) {
+                throw new \RuntimeException(sprintf('The class "%s" does not exist.', $pending['class']));
+            }
+
+            $configClasses[$pending['class']] = array_merge_recursive($pending['config_class'], $configClasses[$pending['class']]);
+        }
+
+        // application
+        if (is_dir($dir = $this->container->getParameter('kernel.root_dir').'/config/doctrator')) {
+            $finder = new Finder();
+            foreach ($finder->files()->name('*.yml')->followLinks()->in($dir) as $file) {
+                foreach ((array) Yaml::load($file) as $class => $configClass) {
+                    // class
+                    if (0 !== strpos($class, 'Model\\')) {
+                        throw new \RuntimeException('The Doctrator entities must been in the "Model\" namespace.');
+                    }
+
+                    // config class
+                    $configClass['output'] = $modelDir.'/'.str_replace('\\', '/', substr(substr($class, 0, strrpos($class, '\\')), 6));
+                    $configClass['bundle_name']      = null;
+                    $configClass['bundle_namespace'] = null;
+                    $configClass['bundle_dir']       = null;
+
+                    $configClasses[$class] = $configClass;
                 }
             }
         }
 
         $output->writeln('generating classes');
 
-        $extensions = array(
-            new \Doctrator\Extension\Core(),
-            new \Bundle\DoctratorBundle\Extension\GenBundleEntity(),
-        );
-        foreach ($this->container->findTaggedServiceIds('doctrator.extension') as $id => $attributes) {
-            $extensions[] = $this->container->get($id);
-        }
-
-        $mondator = new Mondator();
+        $mondator = $this->container->get('doctrator.mondator');
         $mondator->setConfigClasses($configClasses);
-        $mondator->setExtensions($extensions);
         $mondator->process();
     }
 }

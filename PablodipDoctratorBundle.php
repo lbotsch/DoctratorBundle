@@ -19,9 +19,10 @@
  * along with DoctratorBundle. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Bundle\DoctratorBundle;
+namespace Bundle\Pablodip\DoctratorBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Doctrator\Driver\DoctratorDriver;
 use Doctrator\EntityManagerContainer;
 
@@ -31,8 +32,11 @@ use Doctrator\EntityManagerContainer;
  * @package DoctratorBundle
  * @author  Pablo Díez Pascual <pablodip@gmail.com>
  */
-class DoctratorBundle extends Bundle
+class PablodipDoctratorBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
     public function boot()
     {
         $em = $this->container->get('doctrine.orm.entity_manager');
@@ -49,5 +53,31 @@ class DoctratorBundle extends Bundle
         }
 
         EntityManagerContainer::setEntityManager($em);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerExtensions(ContainerBuilder $container)
+    {
+        parent::registerExtensions($container);
+
+        $container->addCompilerPass(new \Bundle\Pablodip\DoctratorBundle\DependencyInjection\Compiler\DoctratorMondatorPass());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNamespace()
+    {
+        return __NAMESPACE__;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPath()
+    {
+        return strtr(__DIR__, '\\', '/');
     }
 }
