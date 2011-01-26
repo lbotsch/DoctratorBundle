@@ -42,15 +42,9 @@ class PablodipDoctratorBundle extends Bundle
         $em = $this->container->get('doctrine.orm.entity_manager');
 
         // FIXME
-        $genDir = $this->container->getParameter('kernel.root_dir').'/../src/Gen';
-        $metadataDriverImpl = $em->getConfiguration()->getMetadataDriverImpl();
-        foreach ($this->container->get('kernel')->getBundles() as $bundle) {
-            $bundleClass = get_class($bundle);
-            $bundleName  = substr(get_class($bundle), strrpos(get_class($bundle), '\\') + 1);
-            if (is_dir($dir = $genDir.'/'.$bundleName.'/Entity')) {
-                $metadataDriverImpl->addDriver(new DoctratorDriver($dir), 'Gen\\'.$bundleName.'\Entity');
-            }
-        }
+        $modelDir = $this->container->getParameter('kernel.root_dir').'/../src/Model';
+        $driver = new DoctratorDriver($modelDir);
+        $em->getConfiguration()->getMetadataDriverImpl()->addDriver($driver, 'Model');
 
         EntityManagerContainer::setEntityManager($em);
     }
