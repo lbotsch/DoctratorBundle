@@ -19,12 +19,13 @@
  * along with DoctratorBundle. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Bundle\Pablodip\DoctratorBundle;
+namespace Pablodip\DoctratorBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Doctrator\Driver\DoctratorDriver;
 use Doctrator\EntityManagerContainer;
+use Pablodip\DoctratorBundle\DependencyInjection\Compiler\DoctratorMondatorPass;
 
 /**
  * DoctratorBundle.
@@ -56,7 +57,7 @@ class PablodipDoctratorBundle extends Bundle
     {
         parent::registerExtensions($container);
 
-        $container->addCompilerPass(new \Bundle\Pablodip\DoctratorBundle\DependencyInjection\Compiler\DoctratorMondatorPass());
+        $container->addCompilerPass(new DoctratorMondatorPass);
     }
 
     /**

@@ -19,7 +19,7 @@
  * along with DoctratorBundle. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Bundle\Pablodip\DoctratorBundle\DependencyInjection;
+namespace Pablodip\DoctratorBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;

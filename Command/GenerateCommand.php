@@ -19,7 +19,7 @@
  * along with DoctratorBundle. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Bundle\Pablodip\DoctratorBundle\Command;
+namespace Pablodip\DoctratorBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
