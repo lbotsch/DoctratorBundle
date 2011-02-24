@@ -40,14 +40,16 @@ class PablodipDoctratorBundle extends Bundle
      */
     public function boot()
     {
-        $em = $this->container->get('doctrine.orm.entity_manager');
+        if ($this->container->has('doctrator.mondator')) {
+            $em = $this->container->get('doctrine.orm.entity_manager');
 
-        // FIXME
-        $modelDir = $this->container->getParameter('kernel.root_dir').'/../src/Model';
-        $driver = new DoctratorDriver($modelDir);
-        $em->getConfiguration()->getMetadataDriverImpl()->addDriver($driver, 'Model');
+            // FIXME
+            $modelDir = $this->container->getParameter('kernel.root_dir').'/../src/Model';
+            $driver = new DoctratorDriver($modelDir);
+            $em->getConfiguration()->getMetadataDriverImpl()->addDriver($driver, 'Model');
 
-        EntityManagerContainer::setEntityManager($em);
+            EntityManagerContainer::setEntityManager($em);
+        }
     }
 
     /**
