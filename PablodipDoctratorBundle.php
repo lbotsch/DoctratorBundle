@@ -55,26 +55,10 @@ class PablodipDoctratorBundle extends Bundle
     /**
      * {@inheritdoc}
      */
-    public function registerExtensions(ContainerBuilder $container)
+    public function build(ContainerBuilder $container)
     {
-        parent::registerExtensions($container);
+        parent::build($container);
 
         $container->addCompilerPass(new DoctratorMondatorPass);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getNamespace()
-    {
-        return __NAMESPACE__;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPath()
-    {
-        return strtr(__DIR__, '\\', '/');
     }
 }

@@ -21,31 +21,30 @@
 
 namespace Pablodip\DoctratorBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Config\FileLocator;
 
 /**
- * DoctratorExtension.
+ * PablodipDoctratorExtension.
  *
  * @package DoctratorBundle
  * @author  Pablo Díez Pascual <pablodip@gmail.com>
  */
-class DoctratorExtension extends Extension
+class PablodipDoctratorExtension extends Extension
 {
     /**
      * Loads the configuration.
      *
      * @param array            $config    An array of settings.
      * @param ContainerBuilder $container A ContainerBuilder instance.
-     *
-     * @return void
      */
-    public function configLoad(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new XmlFileLoader($container, __DIR__.'/../Resources/config');
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('doctrator.xml');
     }
 
@@ -63,13 +62,5 @@ class DoctratorExtension extends Extension
     public function getNamespace()
     {
         return 'http://www.symfony-project.org/schema/dic/doctrator';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAlias()
-    {
-        return 'doctrator';
     }
 }

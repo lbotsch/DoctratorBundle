@@ -69,7 +69,7 @@ class GenerateCommand extends Command
                     foreach ((array) Yaml::load($file) as $class => $configClass) {
                         // class
                         if (0 !== strpos($class, 'Model\\')) {
-                            throw new \RuntimeException('The Doctrator entities must been in the "Model\" namespace.');
+                            throw new \RuntimeException('The doctrator entities must been in the "Model\" namespace.');
                         }
                         if (0 !== strpos($class, $bundleModelNamespace)) {
                             unset($configClass['output'], $configClass['bundle_name'], $configClass['bundle_dir']);
@@ -105,7 +105,7 @@ class GenerateCommand extends Command
                 foreach ((array) Yaml::load($file) as $class => $configClass) {
                     // class
                     if (0 !== strpos($class, 'Model\\')) {
-                        throw new \RuntimeException('The Doctrator entities must been in the "Model\" namespace.');
+                        throw new \RuntimeException('The doctrator entities must been in the "Model\" namespace.');
                     }
 
                     // config class
