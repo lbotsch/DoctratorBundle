@@ -43,7 +43,7 @@ Just to make sure everything is loading properly...
 DoctratorBundle will automatically parse these files:
 
   * app/config/doctrator/*.yml
-  * *Bundle/Resources/config/doctrator/*.yml
+  * Bundle/Resources/config/doctrator/*.yml
 
 Here is an example:
 
