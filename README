@@ -1,4 +1,56 @@
-DoctratorBundle
----------------
+# DoctratorBundle
 
 Bundle to use Doctrator with Symfony2.
+
+## Installing DoctratorBundle
+
+From the root of your Symfony project...
+
+### Install [Mondongo](https://github.com/mondongo/mondongo), [Doctrator](https://github.com/pablodip/doctrator) & [DoctratorBundle](https://github.com/pablodip/DoctratorBundle)
+
+    $ git submodule https://github.com/pablodip/DoctratorBundle.git src/Pablodip/DoctratorBundle
+    $ git submodule https://github.com/pablodip/doctrator.git vendor/doctrator
+    $ git submodule https://github.com/mondongo/mondongo.git vendor/mondongo
+    $ git submodule update --init
+
+### Add to Autoloader
+
+You can find this in `autoload.php` or perhaps your `bootstrap.php` file:
+
+    $loader->registerNamespaces(array(
+        ...
+        'Pablodip'                       => __DIR__.'/../src',
+        'Doctrator'                      => __DIR__.'/../vendor/doctrator/src',
+        'Mondongo'                       => __DIR__.'/../vendor/mondongo/src',
+    ));
+
+### Test out the CLI
+
+Just to make sure everything is loading properly...
+
+    $ php app/console doctrator:generate --help
+    
+    Usage:
+     doctrator:generate
+    ...
+
+## Getting Started
+
+**Recommended Reading:** [Mondator Documentation](http://mondongo.es/documentation/1.0/mondator/en/usage)
+
+### Create a config files
+
+DoctratorBundle will automatically parse the `.../Resources/config/doctrator` folder of each bundle
+in search of a `.yml` file.
+
+Here is an example:
+
+    Model\HelloBundle\Document\School:
+        fields:
+            name:           string
+            description:    string
+
+### Generate your models
+
+    $ php app/console doctrator:generate
+
