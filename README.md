@@ -8,7 +8,7 @@ From the root of your Symfony project...
 
 ### Install [Mondongo](https://github.com/mondongo/mondongo), [Doctrator](https://github.com/pablodip/doctrator) & [DoctratorBundle](https://github.com/pablodip/DoctratorBundle)
 
-    $ git submodule git://github.com/pablodip/DoctratorBundle.git src/Pablodip/DoctratorBundle
+    $ git submodule git://github.com/pablodip/DoctratorBundle.git src/Lubo/DoctratorBundle
     $ git submodule git://github.com/pablodip/doctrator.git vendor/doctrator
     $ git submodule git://github.com/mondongo/mondongo.git vendor/mondongo
     $ git submodule update --init
@@ -19,7 +19,7 @@ You can find this in *autoload.php* or perhaps your *bootstrap.php* file:
 
     $loader->registerNamespaces(array(
         ...
-        'Pablodip'                       => __DIR__.'/../src',
+        'Lubo'                       => __DIR__.'/../src',
         'Doctrator'                      => __DIR__.'/../vendor/doctrator/src',
         'Mondongo'                       => __DIR__.'/../vendor/mondongo/src',
     ));

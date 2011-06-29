@@ -19,7 +19,7 @@
  * along with DoctratorBundle. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Pablodip\DoctratorBundle\DependencyInjection;
+namespace Lubo\DoctratorBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -29,12 +29,12 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Config\FileLocator;
 
 /**
- * PablodipDoctratorExtension.
+ * LuboDoctratorExtension.
  *
  * @package DoctratorBundle
  * @author  Pablo Díez Pascual <pablodip@gmail.com>
  */
-class PablodipDoctratorExtension extends Extension
+class LuboDoctratorExtension extends Extension
 {
     /**
      * Loads the configuration.

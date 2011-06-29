@@ -19,13 +19,13 @@
  * along with DoctratorBundle. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Pablodip\DoctratorBundle;
+namespace Lubo\DoctratorBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Doctrator\Driver\DoctratorDriver;
 use Doctrator\EntityManagerContainer;
-use Pablodip\DoctratorBundle\DependencyInjection\Compiler\DoctratorMondatorPass;
+use Lubo\DoctratorBundle\DependencyInjection\Compiler\DoctratorMondatorPass;
 
 /**
  * DoctratorBundle.
@@ -33,7 +33,7 @@ use Pablodip\DoctratorBundle\DependencyInjection\Compiler\DoctratorMondatorPass;
  * @package DoctratorBundle
  * @author  Pablo Díez Pascual <pablodip@gmail.com>
  */
-class PablodipDoctratorBundle extends Bundle
+class LuboDoctratorBundle extends Bundle
 {
     /**
      * {@inheritdoc}

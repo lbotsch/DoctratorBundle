@@ -19,7 +19,7 @@
  * along with DoctratorBundle. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Pablodip\DoctratorBundle\Extension;
+namespace Lubo\DoctratorBundle\Extension;
 
 use Mondongo\Mondator\Definition\Definition;
 use Mondongo\Mondator\Extension;

@@ -19,7 +19,7 @@
  * along with DoctratorBundle. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Pablodip\DoctratorBundle\DependencyInjection\Compiler;
+namespace Lubo\DoctratorBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -52,7 +52,7 @@ class DoctratorMondatorPass implements CompilerPassInterface
         $mondatorDefinition->addMethodCall('addExtension', array(new Reference('doctrator.extension.core')));
 
         // bundles
-        $definition = new Definition('Pablodip\DoctratorBundle\Extension\Bundles');
+        $definition = new Definition('Lubo\DoctratorBundle\Extension\Bundles');
         $container->setDefinition('doctrator.extension.bundles', $definition);
 
         $mondatorDefinition->addMethodCall('addExtension', array(new Reference('doctrator.extension.bundles')));
